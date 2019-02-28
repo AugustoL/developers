@@ -16,7 +16,8 @@ Retrieving information from Winding Tree ecosystem is as easy
 as calling a common REST API can be. At this time, there is
 no authorization or registration needed.
 
-<!-- TODO information about versions, errors, warnings? -->
+!!!TODO!!! https://github.com/windingtree/wt-read-api/pull/198
+<!-- !!!TODO information about versions, errors, warnings? -->
 
 ### List hotels
 
@@ -66,11 +67,11 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2&fields=name,addres
     {
       "name": "Central Hill Apartments",
       "address": {
-        "line1": "Park Lane 554",
-        "line2": "",
-        "postalCode": "33317",
+        "road": "Park Lane",
+        "houseNumber": "554",
+        "postcode": "33317",
         "city": "Dragolm",
-        "country": "RO"
+        "countryCode": "RO"
       },
       "currency": "RON",
       "location": {
@@ -81,11 +82,11 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2&fields=name,addres
     {
       "name": "Guest House One Eyed Badger",
       "address": {
-        "line1": "Oak street 77",
-        "line2": "",
-        "postalCode": "33313",
+        "road": "Oak street",
+        "houseNumber": "77",
+        "postcode": "33313",
         "city": "Dragolm",
-        "country": "RO"
+        "countryCode": "RO"
       },
       "currency": "RON",
       "location": {
@@ -125,11 +126,11 @@ $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02
     }
   },
   "address": {
-    "line1": "Oak street 77",
-    "line2": "",
-    "postalCode": "33313",
+    "road": "Oak street",
+    "houseNumber": "77",
+    "postcode": "33313",
     "city": "Dragolm",
-    "country": "RO"
+    "countryCode": "RO"
   },
   "currency": "RON",
   "images": [

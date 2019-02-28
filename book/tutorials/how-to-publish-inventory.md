@@ -47,11 +47,12 @@ about both you and the property. In Frank's case, it will look like this:
       }
     },
     "address": {
-      "line1": "300 E. Street SW, Suite 5R30",
+      "road": "E. Street SW, Suite 5R30",
+      "houseNumber": "300",
       "city": "Washington",
       "state": "DC",
-      "postalCode": "20546",
-      "country": "US"
+      "postcode": "20546",
+      "countryCode": "US"
     },
     "timezone": "America/New_York",
     "currency": "USD",
@@ -158,11 +159,12 @@ We will store the data into a file called `franks-apartment.json`.
       }
     },
     "address": {
-      "line1": "300 E. Street SW, Suite 5R30",
+      "road": "E. Street SW, Suite 5R30",
+      "houseNumber": "300",
       "city": "Washington",
       "state": "DC",
-      "postalCode": "20546",
-      "country": "US"
+      "postcode": "20546",
+      "countryCode": "US"
     },
     "roomTypes": [
       {

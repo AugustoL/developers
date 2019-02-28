@@ -46,6 +46,9 @@ consumer to adjust the sizes of these pictures.
 }
 ```
 
+!!!TODO!!! https://github.com/windingtree/wiki/pull/97
+!!!TODO!!! add operator, category, language declaration
+
 You are also able to list hotel-wide `amenities`. So far, it's
 a free text, but we plan to change it in the future to make it
 easily searchable across many hotels.
@@ -115,6 +118,9 @@ The following specification means _for the traveller_ that:
 
 #### Inventory
 
+!!!TODO!!! https://github.com/windingtree/wiki/pull/97
+!!!TODO!!! add category
+
 You can specify images and amenities also for your room types
 in the same way as for the whole hotel.
 
@@ -155,7 +161,8 @@ have three options how to do it. You can declare when the rate plan can be used:
 Last but not least, you can modify the base price of every rate plan when
 certain conditions \(`modifiers`\), such as minimal number of guests, age or length of stay,
 are met. These come in handy for example when a second person
-in the room gets a huge discount.
+in the room gets a huge discount. We support the modification either based on percents
+or as an absolute amount.
 
 The following example \(when added to the required fields of a rate plan\) means,
 that the price is in EUR, can be used for bookings that happen in year 2018 and
@@ -179,6 +186,7 @@ or 150 EUR.
   "modifiers": [
     {
       "adjustment": -50,
+      "unit": "percentage",
       "conditions": {
         "minOccupants": 2
       }
@@ -294,6 +302,7 @@ Write API looks like this:
           "modifiers": [
             {
               "adjustment": -50,
+              "unit": "percentage",
               "conditions": {
                 "minOccupants": 2
               }

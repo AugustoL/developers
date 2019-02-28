@@ -109,12 +109,14 @@ in a different Winding Tree environment.
 We would of course like to show the hotel information to the visitor, so let's do
 exactly that.
 
+!!!TODO update the actual gist!!!
+
 ```js
 const displayHotelData = (hotelData) => {
   const address = `
-    <span>${hotelData.address.line1},</span>
-    <span>${hotelData.address.city} ${hotelData.address.postalCode}</span>
-    <span>${hotelData.address.country}</span>
+    <span>${hotelData.address.road} ${hotelData.address.houseNumber},</span>
+    <span>${hotelData.address.city} ${hotelData.address.postcode}</span>
+    <span>${hotelData.address.countryCode}</span>
   `;
   document.getElementById('hotel-name').innerHTML = hotelData.name;
   document.getElementById('hotel-address').innerHTML = address;

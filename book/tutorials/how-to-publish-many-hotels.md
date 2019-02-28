@@ -43,6 +43,8 @@ concurrency on Ethereum.
 In any case, it would be wise to run Write API on-premise and not expose
 it to the public internet.
 
+!!!TODO!!! write down the register hotel without data use case
+
 ## Where to next
 
 * [How to keep the Write API secure](how-to-secure-write-api.md)
