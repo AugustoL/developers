@@ -139,6 +139,19 @@ will be free for three nights - from Thursday to Sunday.
 }
 ```
 
+#### Special fields
+
+In addition to the aforementioned sections, the data can contain a few
+more special fields.
+
+Since we don't currently offer a way of localizing the textual data,
+we at least allow you to declare in which `defaultLocale` the content is.
+It can be used to for example translate the text automatically on the client
+side.
+
+Another special field is called `booking` and contains URI of the
+[Booking API](how-to-accept-bookings.md) instance.
+
 ### Uploading the data
 
 The [Write API](https://github.com/windingtree/wt-write-api) wants all
@@ -209,7 +222,9 @@ We will store the data into a file called `franks-apartment.json`.
         "quantity": 1
       }
     ]
-  }
+  },
+  "defaultLocale": "en",
+  "booking": "https://franks.example-booking-domain.com"
 }
 ```
 

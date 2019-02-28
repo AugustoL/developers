@@ -34,7 +34,9 @@ on the Travel agency website. There is currently no restriction
 as to where to host your pictures, but we recommend to make them
 accessible via HTTP. We also recommend to use HD pictures
 that look well on modern devices. It should be up to the data
-consumer to adjust the sizes of these pictures.
+consumer to adjust the sizes of these pictures. Also, since there's no
+metadata available, we recommend to list the most important picture as
+the first one.
 
 ```json
 {
@@ -46,19 +48,57 @@ consumer to adjust the sizes of these pictures.
 }
 ```
 
-!!!TODO!!! https://github.com/windingtree/wiki/pull/97
-!!!TODO!!! add operator, category, language declaration
+We also offer a way of putting a hotel into certain `category` for better
+search possibilities. Available categories are described in the
+<a href="/data-model/hotels.html" target="_blank">data model</a>.
 
-You are also able to list hotel-wide `amenities`. So far, it's
-a free text, but we plan to change it in the future to make it
-easily searchable across many hotels.
+For legal reasons, it's also a good idea to add information on the hotel's
+`operator`, a legal entity responsible for running the property.
+
+```json
+{
+  "operator": {
+    "name": "Example hotels Ltd.",
+    "address": {
+      "road": "E. Street SW",
+      "houseNumber": "300",
+      "city": "Washington",
+      "state": "DC",
+      "postcode": "20546",
+      "countryCode": "US"
+    },
+    "contact": {
+      "email": "operator@example-hotel.com"
+    }
+  }
+}
+```
+
+You are able to tell a lot more details about your property with
+the use of `amenities`, `properties` and `tags`. Eventhough they
+might look simliar, they each have a specific semantics.
+
+Amenities are yes/no services provided by free and we have an enumeration
+of possible values. Tags are on the other hand totally free and you can
+fill in whatever you'd like.
+
+Properties describe some objective qualities of the hotel that can be
+quantifiable, such as pool size. The properties names are also limited
+by an enumeration to make them easily searchable.
 
 ```json
 {
   "amenities": [
-    "restaurant",
-    "vending machine",
-    "parking"
+    "dry cleaning", "free parking", "free wi-fi", "restaurant"
+  ],
+  "properties": [
+    {
+      "name": "pool size",
+      "value": "300 square feet"
+    }
+  ],
+  "tags": [
+    "luxury", "fine dining"
   ]
 }
 ```
@@ -118,23 +158,30 @@ The following specification means _for the traveller_ that:
 
 #### Inventory
 
-!!!TODO!!! https://github.com/windingtree/wiki/pull/97
-!!!TODO!!! add category
-
-You can specify images and amenities also for your room types
-in the same way as for the whole hotel.
+You can specify category, images, amenities, properties and
+tags also for your room types in the same way as for the whole hotel.
 
 ```json
 {
+  "category": "teepee",
   "images": [
     "https://swarm.windingtree.com:443/bzz-raw:/ac9ee64f4324f20e89d7ea219954184f357c9a10ba4de4e1d238053d5f86a9b0",
     "https://swarm.windingtree.com:443/bzz-raw:/d71ca677b699764d378ebf15851ce7bc0161067b44ca8d628760d88d92870941",
     "https://swarm.windingtree.com:443/bzz-raw:/50cbcd7c03d66e0c7be4e76d2e36254494366d7e80d66b9839d588af96a237ff"
   ],
   "amenities": [
-    "TV",
-    "phone",
-    "internet"
+    "tv",
+    "crib",
+    "hairdryer"
+  ],
+  "properties": [
+    {
+      "name": "room area",
+      "value": 42
+    }
+  ],
+  "tags": [
+    "pink walls"
   ]
 }
 ```
