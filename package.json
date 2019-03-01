@@ -37,10 +37,10 @@
     "yamljs": "^0.3.0"
   },
   "dependencies": {
-    "@windingtree/wt-booking-api": "^0.5.0-7972c5059f5fc0cc3380a960301de276d1b1acb1.0",
+    "@windingtree/wt-booking-api": "^0.5.0-a239c530f9892b6d2a03c1c9959b7fadc5af6554.0",
     "@windingtree/wt-notification-api": "^0.5.0-820f8a65ca70c7812a7fcf805e5d5c4cceb057d4.0",
-    "@windingtree/wt-read-api": "^0.12.0-38bb804944504147ef0545c54219f9288a7d9094.0",
+    "@windingtree/wt-read-api": "^0.12.0-5160356a7b4933c37faabeca703d1e55cf211135.0",
     "@windingtree/wt-search-api": "^0.5.0-ed7f48fa9c5fe15dac0320189e3d35ca4ca15899.0",
-    "@windingtree/wt-write-api": "^0.14.0-8a378022762100b98d0ecf8eaf74efedb1517cb7.0"
+    "@windingtree/wt-write-api": "^0.14.0-a4bc5f8f62e4b9753744991f1aab849d0d285440.0"
   }
 }
