@@ -31,10 +31,15 @@ $ docker pull windingtree/wt-read-api
 ```
 
 And then you need to run it with a configuration meant for the
-environment you have chosen:
+environment you have chosen. You also need to specify to which
+Ethereum Node the API will connect. We recommend to register with
+[Infura](https://infura.io/) where you will get an HTTP address such
+as `https://ropsten.infura.io/v3/project-id` which you would use as
+ETH_NETWORK_PROVIDER. Be careful to choose the node with appropriate
+network (i. e. ropsten or mainnet).
 
 ```sh
-$ docker run -p 8081:3000 -e WT_CONFIG=playground windingtree/wt-read-api
+$ docker run -p 8081:3000 -e ETH_NETWORK_PROVIDER=address_to_node -e WT_CONFIG=playground windingtree/wt-read-api
 ```
 
 The Read API is then exposed on port 8081:
