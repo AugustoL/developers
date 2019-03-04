@@ -1,7 +1,6 @@
 # How to publish inventory
 
-In this tutorial, you will learn how tu publish the simplest offering
-possible: Your apartment for a period of your vacation.
+In this tutorial, you will learn how to publish a very simple offer.
 
 ## Requirements
 
@@ -9,13 +8,11 @@ possible: Your apartment for a period of your vacation.
 > ####Info
 > Learn how to [discover](how-to-pick-environment.md), [setup](how-to-setup-write-api.md) and [make discoverable]()
 the Winding Tree ecosystem APIs.
+- [Ethereum account configured in WT Write API](how-to-setup-write-api.md)
 
 ## Step by step
 
-Let's say your name is Frank, you are accidentaly living
-in NASA offices in Washington, DC and you are going out of town
-for a weekend. That's a great moment to offer your apartment to
-other travellers.
+Let's say your name is Frank, you are living in Washington, DC, you are going out of town for a weekend, and you want to offer your apartment to other travelers.
 
 ### Preparing the data
 
@@ -212,8 +209,7 @@ We will store the data into a file called `franks-apartment.json`.
 ```
 
 In order to list the apartment, we will call the Write API's `/hotels`
-endpoint. To be able to do that, you need to have your Write API
-[account ready and configured](how-to-setup-write-api.md).
+endpoint and use the account you configured on the WT Write API.
 
 ```sh
 $ curl -X POST https://playground-write-api.windingtree.com/hotels \
