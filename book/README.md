@@ -4,6 +4,7 @@ Winding Tree platform is an open-source platform of APIs connected to decentrali
 
 Winding Tree core team maintains [reference open-source implementation of API Servers](/tooling.md) you can run yourself for convenience access to the platform data in the [runtime environments](/tutorials/how-to-pick-environment.md).
 
+**Get all the hotels listed in San Francisco, California, USA.**
 ![shell code](assets/carbon.png)
 
 **Learn more**
