@@ -1,6 +1,6 @@
 # Getting started with Winding Tree
 
-Winding Tree platform is an open-source ecosystem of interoperable API standards and harmonized data structures enabling decentralized distribution and discovery of travel products on top of Ethereum blockchain, distributed databases and web technologies.
+Winding Tree platform is an open-source platform of APIs connected to decentralized and distributed networks, enabling decentralized travel inventory distribution.
 
 Winding Tree core team maintains [reference open-source implementation of API Servers](/tooling.md) you can run yourself for convenience access to the platform data in the [runtime environments](/tutorials/how-to-pick-environment.md).
 
