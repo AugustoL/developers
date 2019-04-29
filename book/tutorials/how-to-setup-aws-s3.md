@@ -30,6 +30,27 @@ So in the *Set permissions* section, make sure that all of the boxes are unticke
 
 ![S3 Bucket permission dialogue](../assets/aws-s3-0.png)
 
+Another thing to do on your newly created bucket is to properly setup
+[Cross-origin resource sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+While this is not needed for API communication, it will allow the platform users
+to access your data files directly from the browser.
+
+In the bucket detail, navigate to the *Permissions* tab and under *CORS configuration*,
+fill in this XML snippet. This allows any webpage to read the data directly from
+your bucket.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <MaxAgeSeconds>3000</MaxAgeSeconds>
+    <AllowedHeader>Authorization</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+```
+
 ### Create new user with appropriate permission policy
 
 Since AWS credentials are stored in the Write API, you should create a separate

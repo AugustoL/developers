@@ -76,6 +76,10 @@ Write API supports upload to [AWS S3](https://aws.amazon.com/s3/) out of the
 box, but the Adapter itself does not contain any HTTPS upload specific code.
 It is up to you.
 
+While setting up your server, don't forget about proper
+[Cross-origin resource sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+setup.
+
 ### More options
 
 There are of course plenty of options available, some more mature than others.
@@ -90,3 +94,4 @@ party contribution. Thank you!
 
 - <a href="https://github.com/windingtree/off-chain-adapter-swarm" target="_blank">Adapter for Swarm storage (Javascript)</a>
 - <a href="https://github.com/windingtree/off-chain-adapter-http" target="_blank">Adapter for HTTPS storage (Javascript)</a>
+- [How to setup AWS S3]('how-to-setup-aws-s3.md')
