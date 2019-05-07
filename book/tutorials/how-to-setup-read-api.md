@@ -47,13 +47,19 @@ The Read API is then exposed on port 8081:
 ```sh
 $ curl localhost:8081
 {
-   "wtIndexAddress" : "0xfb562057d613175c850df65e435bb0824b65d319",
-   "version" : "0.10.0",
-   "ethNetwork" : "ropsten",
    "docs" : "https://playground-api.windingtree.com/docs/",
-   "info" : "https://github.com/windingtree/wt-read-api/blob/master/README.md",
+   "wtIndexAddresses" : {
+      "airlines" : "0x918154a7b2f37ca03e0D05283B5d0d781812DEB6",
+      "hotels" : "0xB309875d8b24D522Ea0Ac57903c8A0b0C93C414A"
+   },
+   "version" : "0.13.4",
+   "ethNetwork" : "ropsten",
    "config" : "playground",
-   "dataFormatVersion" : "0.2.0"
+   "dataFormatVersions" : {
+      "hotels" : "0.6.x",
+      "airlines" : "0.6.x"
+   },
+   "info" : "https://github.com/windingtree/wt-read-api/blob/master/README.md"
 }
 ```
 
