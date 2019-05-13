@@ -6,3 +6,4 @@
 * [How to setup Winding Tree Read API](tutorials/how-to-setup-read-api.md)
 * [How to accept bookings?](tutorials/how-to-accept-bookings.md)
 * [How to build a Hotel Booking Page](tutorials/how-to-build-a-booking-page.md)
+* [How to check published data?](tutorials/how-to-check-published-data.md)

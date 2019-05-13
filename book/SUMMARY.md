@@ -18,6 +18,7 @@
   * [How to setup Winding Tree Read API](tutorials/how-to-setup-read-api.md)
   * [How to accept bookings?](tutorials/how-to-accept-bookings.md)
   * [How to build a Hotel Booking Page](tutorials/how-to-build-a-booking-page.md)
+  * [How to check published data?](tutorials/how-to-check-published-data.md)
 * [FAQ](faq.md)
   * [How much does it cost to publish Inventory](tutorials/how-much-does-it-cost.md)
   * [How do I generate my own Ethereum wallet](tutorials/how-to-generate-ethereum-wallet.md)
