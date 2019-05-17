@@ -69,10 +69,7 @@ const list = [
 ]
 
 const swaggerTemplate = fs.readFileSync(path.resolve(__dirname, './swagger-ui.template.html'), { encoding: 'utf-8'});
-
 const apiPromises = [];
-
-
 
 for(let api of list) {
   const packageFile = JSON.parse(fs.readFileSync(`${baseSourcePath}/${api.package}/package.json`, { encoding: 'utf-8'}));
@@ -113,12 +110,14 @@ for(let api of list) {
                   url: `${targetSpecPrefix}${api.name}-${version}.yaml`,
                 });
               });
+            }).on('end', () => {
+              return resolve({})
             });
           }));
       return Promise.all(versionPromises)
         .then((apiVersions) => {
           const swaggerPage = swaggerTemplate
-            .replace('<%YAML_SPEC_URLS%>', JSON.stringify(apiVersions));
+            .replace('<%YAML_SPEC_URLS%>', JSON.stringify(apiVersions.filter((d) => !! d.name)));
           fs.writeFileSync(`${baseTargetViewerPath}/${api.name}.html`, swaggerPage);
         })
     });

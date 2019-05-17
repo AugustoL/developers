@@ -1,7 +1,9 @@
 const path = require('path'),
   fs = require('fs'),
-  YAML = require('yamljs'),
-  https = require('https');
+  request = require('request'),
+  prequest = require('request-promise'),
+  tar = require('tar')
+  YAML = require('yamljs');
 
 const targetSpecPrefix = '/data-model/specs/';
 const baseSourcePath = path.resolve(__dirname, '../node_modules/');
@@ -12,80 +14,67 @@ const targetViewerPath = path.resolve(__dirname, `../book/data-model`);
 const list = [
   {
     name: 'hotels',
-    docs: '@windingtree/wt-hotel-schemas/dist/swagger.yaml',
-    rootModels: [
-      {
-        name: 'On chain data',
-        ref: '#/components/schemas/HotelOnChain'
-      },
-      {
-        name: 'HotelDataIndex',
-        ref: '#/components/schemas/HotelDataIndex'
-      },
-      {
-        name: 'HotelDescription',
-        ref: '#/components/schemas/HotelDescription'
-      },
-      {
-        name: 'RatePlans',
-        ref: '#/components/schemas/RatePlans'
-      },
-      {
-        name: 'Availability',
-        ref: '#/components/schemas/Availability'
-      }
-    ]
+    package: '@windingtree/wt-hotel-schemas',
+    docs: 'dist/swagger.yaml',
   },
   {
     name: 'airlines',
-    docs: '@windingtree/wt-airline-schemas/dist/swagger.yaml',
-    rootModels: [
-      {
-        name: 'On chain data',
-        ref: '#/components/schemas/AirlineOnChain'
-      },
-      {
-        name: 'AirlineDataIndex',
-        ref: '#/components/schemas/AirlineDataIndex'
-      },
-      {
-        name: 'AirlineDescription',
-        ref: '#/components/schemas/AirlineDescription'
-      },
-      {
-        name: 'Flights',
-        ref: '#/components/schemas/Flights'
-      },
-      {
-        name: 'FlightInstances',
-        ref: '#/components/schemas/FlightInstances'
-      }
-    ]
+    package: '@windingtree/wt-airline-schemas',
+    docs: 'dist/swagger.yaml',
   }
 ];
 
-function downloadFile(url, dest, cb) {
-  var file = fs.createWriteStream(dest);
-  var request = https.get(url, function(response) {
-    response.pipe(file);
-    file.on('finish', function() {
-      file.close(cb);
-    });
-  });
-}
-
 const swaggerTemplate = fs.readFileSync(path.resolve(__dirname, './swagger-ui.template.html'), { encoding: 'utf-8'});
+const modelPromises = [];
+let versionPromises;
 
 for(let model of list) {
   const modelVersions = [];
-  const specFile = YAML.load(`${baseSourcePath}/${model.docs}`);
-  fs.writeFileSync(`${targetSpecLocation}/${model.name}-${specFile.info.version}.yaml`, YAML.stringify(specFile));
-  modelVersions.push({
-    name: specFile.info.version,
-    url: `${targetSpecPrefix}${model.name}-${specFile.info.version}.yaml`,
-  });
-
-  const swaggerPage = swaggerTemplate
-    .replace('<%YAML_SPEC_URLS%>', JSON.stringify(modelVersions));
-  fs.writeFileSync(`${targetViewerPath}/${model.name}.html`, swaggerPage);
+  
+  // we can't use git, because artifacts are built before they get published to npm
+  const pipeline = prequest(`https://registry.npmjs.org/${model.package}`, { json: true })
+    .then((packageData) => {
+      // get version list
+      versionPromises = Object.keys(packageData.versions)
+        .filter((v) => v.indexOf('-') === -1)
+        .sort((a, b) => {
+          return a > b ? -1 : 1;
+        })
+        .map((version) => new Promise((resolve, reject) => {
+          // build a local yaml file for all versions
+          const data = [];
+          request(packageData.versions[version].dist.tarball)
+            .pipe(tar.t({
+              filter: (path, entry) => {
+                return entry.path === `package/${model.docs}`;
+              }
+            }))
+            .on('entry', entry => {
+              entry.on('data', c => data.push(c))
+              entry.on('end', v => {
+                const specFile = YAML.parse((Buffer.concat(data)).toString());
+                fs.writeFileSync(`${targetSpecLocation}/${model.name}-${specFile.info.version}.yaml`, YAML.stringify(specFile));
+                return resolve({
+                  name: specFile.info.version,
+                  url: `${targetSpecPrefix}${model.name}-${specFile.info.version}.yaml`,
+                });
+              });
+            }).on('end', () => {
+              return resolve({})
+            });
+          }));
+      
+      return Promise.all(versionPromises)
+        .then((modelVersions) => {
+          const swaggerPage = swaggerTemplate
+            .replace('<%YAML_SPEC_URLS%>', JSON.stringify(modelVersions.filter((d) => !! d.name)));
+          fs.writeFileSync(`${targetViewerPath}/${model.name}.html`, swaggerPage);
+        });
+    });
+  modelPromises.push(pipeline);
 }
+
+Promise.all(modelPromises)
+  .then(() => {
+    console.log('done');
+  });
