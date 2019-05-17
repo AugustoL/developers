@@ -4,13 +4,13 @@
   "description": "Winding Tree developer documentation",
   "main": "README.md",
   "scripts": {
-    "build-oas-views": "node management/prepare-oas-views.js",
+    "build-api-views": "node management/prepare-api-views.js",
     "build-datamodel-views": "node management/prepare-datamodel-views.js",
     "copy-legacy-swagger-ui": "rimraf -r book/swagger-ui/ && cp -r swagger-ui book/",
     "build-gitbook": "gitbook build",
     "clean": "rimraf _book && rimraf book/data-model/specs/*.yaml && rimraf book/apis/specs/*.yaml && rimraf book/data-model/*.html && rimraf book/apis/*.html",
-    "build": "npm run clean && npm run copy-legacy-swagger-ui && npm run build-datamodel-views && npm run build-oas-views && npm run build-gitbook",
-    "dev": "npm run clean && npm run copy-legacy-swagger-ui && npm run build-datamodel-views && npm run build-oas-views && gitbook serve"
+    "build": "npm run clean && npm run copy-legacy-swagger-ui && npm run build-datamodel-views && npm run build-api-views && npm run build-gitbook",
+    "dev": "npm run clean && npm run copy-legacy-swagger-ui && npm run build-datamodel-views && npm run build-api-views && gitbook serve"
   },
   "repository": {
     "type": "git",
