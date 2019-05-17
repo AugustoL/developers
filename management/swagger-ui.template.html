@@ -36,18 +36,19 @@
            window.onload = function() {
              // Build a system
              const ui = SwaggerUIBundle({
-               url: "<%YAML_SPEC_URL%>",
+               urls: <%YAML_SPEC_URLS%>,
                dom_id: '#swagger-ui',
                deepLinking: true,
                presets: [
                  SwaggerUIBundle.presets.apis,
                  SwaggerUIStandalonePreset
                ],
+               layout: 'StandaloneLayout',
                plugins: [
                  SwaggerUIBundle.plugins.DownloadUrl
                ],
              })
-             window.ui = ui
+             window.ui = ui;
            }
         </script>
     </body>

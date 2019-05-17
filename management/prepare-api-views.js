@@ -68,13 +68,20 @@ const list = [
 const swaggerTemplate = fs.readFileSync(path.resolve(__dirname, './swagger-ui.template.html'), { encoding: 'utf-8'});
 
 for(let api of list) {
+  const apiVersions = [];
   const packageFile = JSON.parse(fs.readFileSync(`${baseSourcePath}/${api.package}`, { encoding: 'utf-8'}));
   const specFile = YAML.load(`${baseSourcePath}/${api.docs}`);
   // TODO these have to be a part of build process in the respective APIs eventually
   specFile.info.version = packageFile.version;
   specFile.servers = api.servers;
 
-  fs.writeFileSync(`${baseTargetSpecPath}/${api.name}.yaml`, YAML.stringify(specFile));
-  const swaggerPage = swaggerTemplate.replace('<%YAML_SPEC_URL%>', `${targetSpecPrefix}${api.name}.yaml`);
+  fs.writeFileSync(`${baseTargetSpecPath}/${api.name}-${packageFile.version}.yaml`, YAML.stringify(specFile));
+  apiVersions.push({
+    name: packageFile.version,
+    url: `${targetSpecPrefix}${api.name}-${packageFile.version}.yaml`,
+  });
+  const swaggerPage = swaggerTemplate
+    .replace('<%YAML_SPEC_URLS%>', JSON.stringify(apiVersions));
   fs.writeFileSync(`${baseTargetViewerPath}/${api.name}.html`, swaggerPage);
 }
+

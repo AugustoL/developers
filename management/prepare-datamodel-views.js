@@ -3,7 +3,7 @@ const path = require('path'),
   YAML = require('yamljs'),
   https = require('https');
 
-const targetSpecPrefix = '/data-model/specs';
+const targetSpecPrefix = '/data-model/specs/';
 const baseSourcePath = path.resolve(__dirname, '../node_modules/');
 const tempYamlLocation = path.resolve('/tmp/');
 const targetSpecLocation = path.resolve(__dirname, `../book/${targetSpecPrefix}`);
@@ -77,8 +77,15 @@ function downloadFile(url, dest, cb) {
 const swaggerTemplate = fs.readFileSync(path.resolve(__dirname, './swagger-ui.template.html'), { encoding: 'utf-8'});
 
 for(let model of list) {
+  const modelVersions = [];
   const specFile = YAML.load(`${baseSourcePath}/${model.docs}`);
-  fs.writeFileSync(`${targetSpecLocation}/${model.name}.yaml`, YAML.stringify(specFile));
-  const swaggerPage = swaggerTemplate.replace('<%YAML_SPEC_URL%>', `${targetSpecPrefix}/${model.name}.yaml`);
+  fs.writeFileSync(`${targetSpecLocation}/${model.name}-${specFile.info.version}.yaml`, YAML.stringify(specFile));
+  modelVersions.push({
+    name: specFile.info.version,
+    url: `${targetSpecPrefix}${model.name}-${specFile.info.version}.yaml`,
+  });
+
+  const swaggerPage = swaggerTemplate
+    .replace('<%YAML_SPEC_URLS%>', JSON.stringify(modelVersions));
   fs.writeFileSync(`${targetViewerPath}/${model.name}.html`, swaggerPage);
 }
