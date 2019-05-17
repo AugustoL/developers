@@ -33,7 +33,10 @@
     "gitbook-plugin-insert-logo-link": "^1.0.1",
     "gitbook-plugin-last-modified": "^1.0.0",
     "gitbook-plugin-link-checker": "^1.1.4",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "rimraf": "^2.6.3",
+    "tar": "^4.4.8",
     "yamljs": "^0.3.0"
   },
   "dependencies": {

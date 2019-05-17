@@ -1,5 +1,8 @@
 const path = require('path'),
   fs = require('fs'),
+  request = require('request'),
+  prequest = require('request-promise'),
+  tar = require('tar')
   YAML = require('yamljs');
 
 const targetSpecPrefix = '/apis/specs/';
@@ -10,8 +13,8 @@ const baseTargetViewerPath = path.resolve(__dirname, `../book${targetViewerPrefi
 const list = [
   {
     name: 'wt-write-api',
-    docs: '@windingtree/wt-write-api/docs/swagger.yaml',
-    package: '@windingtree/wt-write-api/package.json',
+    docs: 'docs/swagger.yaml',
+    package: '@windingtree/wt-write-api',
     servers: [
       {
         description: 'Playground',
@@ -21,8 +24,8 @@ const list = [
   },
   {
     name: 'wt-read-api',
-    docs: '@windingtree/wt-read-api/docs/swagger.yaml',
-    package: '@windingtree/wt-read-api/package.json',
+    docs: 'docs/swagger.yaml',
+    package: '@windingtree/wt-read-api',
     servers: [
       {
         description: 'Playground',
@@ -32,8 +35,8 @@ const list = [
   },
   {
     name: 'wt-booking-api',
-    docs: '@windingtree/wt-booking-api/docs/swagger.yaml',
-    package: '@windingtree/wt-booking-api/package.json',
+    docs: 'docs/swagger.yaml',
+    package: '@windingtree/wt-booking-api',
     servers: [
       {
         description: 'Mazurka test hotel',
@@ -43,8 +46,8 @@ const list = [
   },
   {
     name: 'wt-search-api',
-    docs: '@windingtree/wt-search-api/docs/swagger.yaml',
-    package: '@windingtree/wt-search-api/package.json',
+    docs: 'docs/swagger.yaml',
+    package: '@windingtree/wt-search-api',
     servers: [
       {
         description: 'Playground',
@@ -54,8 +57,8 @@ const list = [
   },
   {
     name: 'wt-notification-api',
-    docs: '@windingtree/wt-notification-api/docs/swagger.yaml',
-    package: '@windingtree/wt-notification-api/package.json',
+    docs: 'docs/swagger.yaml',
+    package: '@windingtree/wt-notification-api',
     servers: [
       {
         description: 'Playground',
@@ -67,21 +70,62 @@ const list = [
 
 const swaggerTemplate = fs.readFileSync(path.resolve(__dirname, './swagger-ui.template.html'), { encoding: 'utf-8'});
 
-for(let api of list) {
-  const apiVersions = [];
-  const packageFile = JSON.parse(fs.readFileSync(`${baseSourcePath}/${api.package}`, { encoding: 'utf-8'}));
-  const specFile = YAML.load(`${baseSourcePath}/${api.docs}`);
-  // TODO these have to be a part of build process in the respective APIs eventually
-  specFile.info.version = packageFile.version;
-  specFile.servers = api.servers;
+const apiPromises = [];
 
-  fs.writeFileSync(`${baseTargetSpecPath}/${api.name}-${packageFile.version}.yaml`, YAML.stringify(specFile));
-  apiVersions.push({
-    name: packageFile.version,
-    url: `${targetSpecPrefix}${api.name}-${packageFile.version}.yaml`,
-  });
-  const swaggerPage = swaggerTemplate
-    .replace('<%YAML_SPEC_URLS%>', JSON.stringify(apiVersions));
-  fs.writeFileSync(`${baseTargetViewerPath}/${api.name}.html`, swaggerPage);
+
+
+for(let api of list) {
+  const packageFile = JSON.parse(fs.readFileSync(`${baseSourcePath}/${api.package}/package.json`, { encoding: 'utf-8'}));
+
+  // we can't use git, because artifacts are built before they get published to npm
+  const pipeline = prequest(`https://registry.npmjs.org/${api.package}`, { json: true })
+    .then((packageData) => {
+      // get version list
+      const versionPromises = Object.keys(packageData.versions)
+        .filter((v) => v.indexOf('-') === -1)
+        .sort((a, b) => {
+          return a > b ? -1 : 1;
+        })
+        .map((version) => new Promise((resolve, reject) => {
+          // build a local yaml file for all versions
+          const data = [];
+          request(packageData.versions[version].dist.tarball)
+            .pipe(tar.t({
+              filter: (path, entry) => {
+                return entry.path === `package/${api.docs}`;
+              }
+            }))
+            .on('entry', entry => {
+              entry.on('data', c => data.push(c))
+              entry.on('end', v => {
+                const specFile = YAML.parse((Buffer.concat(data)).toString());
+                // TODO these have to be a part of build process in the respective APIs eventually
+                specFile.info.version = version;
+                if (version === packageFile.version) {
+                  specFile.servers = api.servers;
+                } else {
+                  specFile.servers = [];
+                }
+
+                fs.writeFileSync(`${baseTargetSpecPath}/${api.name}-${version}.yaml`, YAML.stringify(specFile));
+                return resolve({
+                  name: version,
+                  url: `${targetSpecPrefix}${api.name}-${version}.yaml`,
+                });
+              });
+            });
+          }));
+      return Promise.all(versionPromises)
+        .then((apiVersions) => {
+          const swaggerPage = swaggerTemplate
+            .replace('<%YAML_SPEC_URLS%>', JSON.stringify(apiVersions));
+          fs.writeFileSync(`${baseTargetViewerPath}/${api.name}.html`, swaggerPage);
+        })
+    });
+  apiPromises.push(pipeline);
 }
 
+Promise.all(apiPromises)
+  .then(() => {
+    console.log('done');
+  });
