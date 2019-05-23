@@ -16,7 +16,7 @@ other Winding Tree ecosystem participants are able to reach them.
 [The Index debugger](http://index-debugger.windingtree.com) is communicating
 directly with the deployed smart contracts and off-chain data where possible.
 Internally, it is using our [Javascript library](https://github.com/windingtree/wt-js-libs)
-and our own [Swarm gateway](https://swarm.windingtree.com). It let's you very
+and our own [Swarm gateway](https://swarm.windingtree.com). It lets you very
 quickly see where your current data is located and whether it is accessible.
 
 The Index Debugger does not check for the semantics of the data, only if it can
