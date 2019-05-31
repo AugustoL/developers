@@ -34,7 +34,9 @@ on the Travel agency website. There is currently no restriction
 as to where to host your pictures, but we recommend to make them
 accessible via HTTP. We also recommend to use HD pictures
 that look well on modern devices. It should be up to the data
-consumer to adjust the sizes of these pictures.
+consumer to adjust the sizes of these pictures. Also, since there's no
+metadata available, we recommend to list the most important picture as
+the first one.
 
 ```json
 {
@@ -46,16 +48,47 @@ consumer to adjust the sizes of these pictures.
 }
 ```
 
-You are also able to list hotel-wide `amenities`. So far, it's
-a free text, but we plan to change it in the future to make it
-easily searchable across many hotels.
+We also offer a way of putting a hotel into certain `category` for better
+search possibilities. Available categories are described in the
+<a href="/data-model/hotels.html" target="_blank">data model</a>.
+
+For legal reasons, it's also a good idea to add information on the hotel's
+`operator`, a legal entity responsible for running the property.
+
+```json
+{
+  "operator": {
+    "name": "Example hotels Ltd.",
+    "address": {
+      "road": "E. Street SW",
+      "houseNumber": "300",
+      "city": "Washington",
+      "state": "DC",
+      "postcode": "20546",
+      "countryCode": "US"
+    },
+    "contact": {
+      "email": "operator@example-hotel.com"
+    }
+  }
+}
+```
+
+You are able to tell a lot more details about your property with
+the use of `amenities`, and `tags`. Eventhough they
+might look similar, they each have a specific semantics.
+
+Amenities are yes/no services provided by the hotel and we have an enumeration
+of possible values. Tags are on the other hand totally free and you can
+fill in whatever you'd like.
 
 ```json
 {
   "amenities": [
-    "restaurant",
-    "vending machine",
-    "parking"
+    "dry cleaning", "free parking", "free wi-fi", "restaurant"
+  ],
+  "tags": [
+    "luxury", "fine dining"
   ]
 }
 ```
@@ -115,20 +148,24 @@ The following specification means _for the traveller_ that:
 
 #### Inventory
 
-You can specify images and amenities also for your room types
+You can specify category, images, amenities and tags also for your room types
 in the same way as for the whole hotel.
 
 ```json
 {
+  "category": "teepee",
   "images": [
     "https://swarm.windingtree.com:443/bzz-raw:/ac9ee64f4324f20e89d7ea219954184f357c9a10ba4de4e1d238053d5f86a9b0",
     "https://swarm.windingtree.com:443/bzz-raw:/d71ca677b699764d378ebf15851ce7bc0161067b44ca8d628760d88d92870941",
     "https://swarm.windingtree.com:443/bzz-raw:/50cbcd7c03d66e0c7be4e76d2e36254494366d7e80d66b9839d588af96a237ff"
   ],
   "amenities": [
-    "TV",
-    "phone",
-    "internet"
+    "tv",
+    "crib",
+    "hairdryer"
+  ],
+  "tags": [
+    "pink walls"
   ]
 }
 ```
@@ -155,7 +192,8 @@ have three options how to do it. You can declare when the rate plan can be used:
 Last but not least, you can modify the base price of every rate plan when
 certain conditions \(`modifiers`\), such as minimal number of guests, age or length of stay,
 are met. These come in handy for example when a second person
-in the room gets a huge discount.
+in the room gets a huge discount. We support the modification either based on percents
+or as an absolute amount.
 
 The following example \(when added to the required fields of a rate plan\) means,
 that the price is in EUR, can be used for bookings that happen in year 2018 and
@@ -179,6 +217,7 @@ or 150 EUR.
   "modifiers": [
     {
       "adjustment": -50,
+      "unit": "percentage",
       "conditions": {
         "minOccupants": 2
       }
@@ -294,6 +333,7 @@ Write API looks like this:
           "modifiers": [
             {
               "adjustment": -50,
+              "unit": "percentage",
               "conditions": {
                 "minOccupants": 2
               }

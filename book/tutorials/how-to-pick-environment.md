@@ -2,7 +2,7 @@
 
 The centerpoint of Winding Tree platform runtime environment is the Ethereum Smart contract called Winding Tree Index. It serves as a decentralized registry of participating service providers \(hotels, airlines\) and the tooling is configured to use it.
 
-The tooling for the environment consists of one or more [REST APIs ](/apis.md)operated either as a service or on-premise - it typically depends on the necessary security measures. The ecosystem is intentionally open, so you can swap Winding Tree reference implementation and architecture with something completely different that suites your particular use case better.
+The tooling for the environment consists of one or more [REST APIs](../apis.md) operated either as a service or on-premise - it typically depends on the necessary security measures. The ecosystem is intentionally open, so you can swap Winding Tree reference implementation and architecture with something completely different that suites your particular use case better.
 
 ### Active environments
 
@@ -16,7 +16,7 @@ Both environments are using the Ropsten Ethereum testnet, so you don't need to h
 
 #### Playground
 
-* Index: [0xfb562057d613175c850df65e435bb0824b65d319](https://ropsten.etherscan.io/address/0xfb562057d613175c850df65e435bb0824b65d319)
+* Index: [0xB309875d8b24D522Ea0Ac57903c8A0b0C93C414A](https://ropsten.etherscan.io/address/0xB309875d8b24D522Ea0Ac57903c8A0b0C93C414A)
 * Read API: [https://playground-api.windingtree.com](https://playground-api.windingtree.com)
 * Write API: [https://playground-write-api.windingtree.com](https://playground-write-api.windingtree.com)
 * Notification API: [https://playground-notification-api.windingtree.com](https://playground-notification-api.windingtree.com)
@@ -27,7 +27,7 @@ We are populating the Playground environment with curated data from [wt-fixtures
 
 #### Demo
 
-* Index: [0xa433590275a3a1ebca247a230076d2d281f46a49](https://ropsten.etherscan.io/address/0xa433590275a3a1ebca247a230076d2d281f46a49)
+* Index: [0xad98e1eCcB4Db6c4BB5a03ee9989a583F0821473](https://ropsten.etherscan.io/address/0xad98e1eCcB4Db6c4BB5a03ee9989a583F0821473)
 * Read API: [https://demo-api.windingtree.com](https://demo-api.windingtree.com)
 * Write API: [https://demo-write-api.windingtree.com](https://demo-write-api.windingtree.com)
 * Search API: [https://demo-search-api.windingtree.com](https://demo-search-api.windingtree.com)

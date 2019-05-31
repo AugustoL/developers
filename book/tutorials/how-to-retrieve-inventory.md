@@ -16,16 +16,14 @@ Retrieving information from Winding Tree ecosystem is as easy
 as calling a common REST API can be. At this time, there is
 no authorization or registration needed.
 
-<!-- TODO information about versions, errors, warnings? -->
-
 ### List hotels
 
 The basic call to the API will give you back only the basic information.
 You can limit the amount of returned results with `limit` query parameter.
 The next page (if there is one) is linked in the `next` field. The `items`
-field contains the information itself. The `error` fields contains eventual
-errors that might occur when retrieving the data from various external
-storages.
+field contains the information itself. The `warnings` and `errors` fields contains
+possible events that might occur when retrieving the data from various external
+storages or data that failed [validation](../data-validation/data-validation.md).
 
 ```sh
 $ curl 'https://playground-api.windingtree.com/hotels?limit=2'
@@ -49,6 +47,7 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2'
       "id": "0x79C5dD88b385e6822C80aC02461A69d4a04A6703"
     }
   ],
+  "warnings": [],
   "errors": [],
   "next": "https://playground-api.windingtree.com/hotels?limit=2&fields=id,location,name&startWith=0xFfC10871d7d8c5648b386E1F6778d132c02Eea33"
 }
@@ -66,11 +65,11 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2&fields=name,addres
     {
       "name": "Central Hill Apartments",
       "address": {
-        "line1": "Park Lane 554",
-        "line2": "",
-        "postalCode": "33317",
+        "road": "Park Lane",
+        "houseNumber": "554",
+        "postcode": "33317",
         "city": "Dragolm",
-        "country": "RO"
+        "countryCode": "RO"
       },
       "currency": "RON",
       "location": {
@@ -81,11 +80,11 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2&fields=name,addres
     {
       "name": "Guest House One Eyed Badger",
       "address": {
-        "line1": "Oak street 77",
-        "line2": "",
-        "postalCode": "33313",
+        "road": "Oak street",
+        "houseNumber": "77",
+        "postcode": "33313",
         "city": "Dragolm",
-        "country": "RO"
+        "countryCode": "RO"
       },
       "currency": "RON",
       "location": {
@@ -94,6 +93,7 @@ $ curl 'https://playground-api.windingtree.com/hotels?limit=2&fields=name,addres
       "id": "0x79C5dD88b385e6822C80aC02461A69d4a04A6703"
     }
   ],
+  "warnings": [],
   "errors": [],
   "next": "https://playground-api.windingtree.com/hotels?limit=2&fields=name,address,currency,location.latitude&startWith=0xFfC10871d7d8c5648b386E1F6778d132c02Eea33"
 }
@@ -125,11 +125,11 @@ $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02
     }
   },
   "address": {
-    "line1": "Oak street 77",
-    "line2": "",
-    "postalCode": "33313",
+    "road": "Oak street",
+    "houseNumber": "77",
+    "postcode": "33313",
     "city": "Dragolm",
-    "country": "RO"
+    "countryCode": "RO"
   },
   "currency": "RON",
   "images": [
@@ -160,6 +160,8 @@ $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02
 }
 ```
 
+Similarily to `warnings` and `errors` for lists, when calling a detail endpoint a `x-data-validation-warning` response header informs the client of [data validation](../data-validation/data-validation.md) errors.
+
 ### Get hotel's inventory
 
 There is a special endpoint for listing hotel's inventory. The `fields`
@@ -168,48 +170,52 @@ query parameter does not work here.
 ```sh
 $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02461A69d4a04A6703/roomTypes'
 
-[
-  {
-    "name": "Single room",
-    "description": "Room with a single bed",
-    "totalQuantity": 8,
-    "occupancy": {
-      "min": 1,
-      "max": 1
+{
+  "items": [
+    {
+      "name": "Single room",
+      "description": "Room with a single bed",
+      "totalQuantity": 8,
+      "occupancy": {
+        "min": 1,
+        "max": 1
+      },
+      "amenities": [
+        "ashtray",
+        "minibar",
+        "TV"
+      ],
+      "images": [
+        "https://swarm.windingtree.com:443/bzz-raw:/29996d00d7b2b9e882ea1ae28ce221a873322de42eeadd5c38bf6a1c5173e7a4",
+        "https://swarm.windingtree.com:443/bzz-raw:/49608659632835abf7cb83c068628e13ec39163da5e263c5d3843a1ca4d110d8"
+      ],
+      "id": "single-room",
+      "updatedAt": "2019-01-23T09:40:19.626Z"
     },
-    "amenities": [
-      "ashtray",
-      "minibar",
-      "TV"
-    ],
-    "images": [
-      "https://swarm.windingtree.com:443/bzz-raw:/29996d00d7b2b9e882ea1ae28ce221a873322de42eeadd5c38bf6a1c5173e7a4",
-      "https://swarm.windingtree.com:443/bzz-raw:/49608659632835abf7cb83c068628e13ec39163da5e263c5d3843a1ca4d110d8"
-    ],
-    "id": "single-room",
-    "updatedAt": "2019-01-23T09:40:19.626Z"
-  },
-  {
-    "name": "Twin bed",
-    "description": "Room with a twin bed",
-    "totalQuantity": 4,
-    "occupancy": {
-      "min": 2,
-      "max": 2
-    },
-    "amenities": [
-      "ashtray",
-      "minibar",
-      "TV"
-    ],
-    "images": [
-      "https://swarm.windingtree.com:443/bzz-raw:/29996d00d7b2b9e882ea1ae28ce221a873322de42eeadd5c38bf6a1c5173e7a4",
-      "https://swarm.windingtree.com:443/bzz-raw:/49608659632835abf7cb83c068628e13ec39163da5e263c5d3843a1ca4d110d8"
-    ],
-    "id": "twin-bed",
-    "updatedAt": "2019-01-23T09:40:19.626Z"
-  }
-]
+    {
+      "name": "Twin bed",
+      "description": "Room with a twin bed",
+      "totalQuantity": 4,
+      "occupancy": {
+        "min": 2,
+        "max": 2
+      },
+      "amenities": [
+        "ashtray",
+        "minibar",
+        "TV"
+      ],
+      "images": [
+        "https://swarm.windingtree.com:443/bzz-raw:/29996d00d7b2b9e882ea1ae28ce221a873322de42eeadd5c38bf6a1c5173e7a4",
+        "https://swarm.windingtree.com:443/bzz-raw:/49608659632835abf7cb83c068628e13ec39163da5e263c5d3843a1ca4d110d8"
+      ],
+      "id": "twin-bed",
+      "updatedAt": "2019-01-23T09:40:19.626Z"
+    }
+  ],
+  "warnings": [],
+  "errors": []
+}
 ```
 
 You can also get a single room type on a special endpoint. You would use
@@ -248,30 +254,36 @@ of rate plans and you can retrieve them for the whole hotel.
 ```sh
 $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02461A69d4a04A6703/ratePlans'
 
-[
-  {
-    "name": "Single room",
-    "description": "Price per night for a standard single room.",
-    "currency": "RON",
-    "price": 158,
-    "roomTypeIds": [
-      "single-room"
-    ],
-    "id": "single-room",
-    "updatedAt": "2019-01-23T09:40:19.626Z"
-  },
-  {
-    "name": "Twin bed",
-    "description": "Price per person per night for a twin bed room.",
-    "currency": "RON",
-    "price": 257,
-    "roomTypeIds": [
-      "twin-bed"
-    ],
-    "id": "twin-bed",
-    "updatedAt": "2019-01-23T09:40:19.626Z"
-  }
-]
+{
+  "items": [
+    [
+      {
+        "name": "Single room",
+        "description": "Price per night for a standard single room.",
+        "currency": "RON",
+        "price": 158,
+        "roomTypeIds": [
+          "single-room"
+        ],
+        "id": "single-room",
+        "updatedAt": "2019-01-23T09:40:19.626Z"
+      },
+      {
+        "name": "Twin bed",
+        "description": "Price per person per night for a twin bed room.",
+        "currency": "RON",
+        "price": 257,
+        "roomTypeIds": [
+          "twin-bed"
+        ],
+        "id": "twin-bed",
+        "updatedAt": "2019-01-23T09:40:19.626Z"
+      }
+    ]
+  ],
+  "warnings": [],
+  "errors": []
+}
 ```
 
 You can get a particular rate plan as well by using the `id` property in the
@@ -299,15 +311,21 @@ Or you can retrieve only rate plans matched to a certain room type.
 curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02461A69d4a04A6703/roomTypes/single-room/ratePlans'
 
 {
-  "name": "Single room",
-  "description": "Price per night for a standard single room.",
-  "currency": "RON",
-  "price": 158,
-  "roomTypeIds": [
-    "single-room"
+  "items": [
+    {
+      "name": "Single room",
+      "description": "Price per night for a standard single room.",
+      "currency": "RON",
+      "price": 158,
+      "roomTypeIds": [
+        "single-room"
+      ],
+      "id": "single-room",
+      "updatedAt": "2019-01-23T09:40:19.626Z"
+    }
   ],
-  "id": "single-room",
-  "updatedAt": "2019-01-23T09:40:19.626Z"
+  "warnings": [],
+  "errors": []
 }
 ```
 
@@ -322,7 +340,7 @@ Availability can be retrieved for the whole hotel.
 $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02461A69d4a04A6703/availability'
 
 {
-  "roomTypes": [
+  "items": [
     {
       "roomTypeId": "single-room",
       "date": "2018-12-24",
@@ -354,6 +372,8 @@ $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02
       "quantity": 0
     }
   ],
+  "warnings": [],
+  "errors": [],
   "updatedAt": "2019-01-23T09:40:19.626Z"
 }
 ```
@@ -364,7 +384,7 @@ Or of course for a single room type.
 $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02461A69d4a04A6703/roomTypes/single-room/availability'
 
 {
-  "roomTypes": [
+  "items": [
     {
       "roomTypeId": "single-room",
       "date": "2018-12-24",
@@ -381,6 +401,8 @@ $ curl 'https://playground-api.windingtree.com/hotels/0x79C5dD88b385e6822C80aC02
       "quantity": 0
     }
   ],
+  "warnings": [],
+  "errors": [],
   "updatedAt": "2019-01-23T09:40:19.626Z"
 }
 ```

@@ -112,9 +112,9 @@ exactly that.
 ```js
 const displayHotelData = (hotelData) => {
   const address = `
-    <span>${hotelData.address.line1},</span>
-    <span>${hotelData.address.city} ${hotelData.address.postalCode}</span>
-    <span>${hotelData.address.country}</span>
+    <span>${hotelData.address.road} ${hotelData.address.houseNumber},</span>
+    <span>${hotelData.address.city} ${hotelData.address.postcode}</span>
+    <span>${hotelData.address.countryCode}</span>
   `;
   document.getElementById('hotel-name').innerHTML = hotelData.name;
   document.getElementById('hotel-address').innerHTML = address;
@@ -143,10 +143,10 @@ room type, we will use our open-source Javascript pricing library
 which we can easily load from [unpkg](https://unpkg.com).
 
 ```html
-<script type="text/javascript" src="https://unpkg.com/@windingtree/wt-pricing-algorithms@0.4.2/dist/web/wt-pricing-algorithms.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@windingtree/wt-pricing-algorithms@0.5.3/dist/umd/wt-pricing-algorithms.js"></script>
 ```
 
-This will make it available under `window['wt-pricing-algorithms']`. Make sure to place
+This will make it available under `window.wtPricingAlgorithms`. Make sure to place
 it *before* our existing Javascript `script` tag.
 
 Now, to check availability and compute a price, we need certain informations
@@ -202,7 +202,7 @@ const recomputePriceAndAvailability = () => {
     ) {
     return;
   }
-  const pc = new window['wt-pricing-algorithms'].prices.PriceComputer(
+  const pc = new window.wtPricingAlgorithms.prices.PriceComputer(
     hotelDataFromApi.roomTypes,
     hotelDataFromApi.ratePlans,
     hotelDataFromApi.currency
@@ -234,8 +234,8 @@ If we are lucky, we will get a price. But what about the availability? Well,
 let's add it to the part where we come up with the price.
 
 ```js
-const indexedAvailability = new window['wt-pricing-algorithms'].availability.indexAvailability(hotelDataFromApi.availability.roomTypes);
-const roomAvailability = new window['wt-pricing-algorithms'].availability.computeAvailability(
+const indexedAvailability = window.wtPricingAlgorithms.availability.indexAvailability(hotelDataFromApi.availability.roomTypes);
+const roomAvailability = window.wtPricingAlgorithms.availability.computeAvailability(
   arrival,
   departure,
   guests.length,
@@ -319,7 +319,7 @@ const actualPrice = resultingPrice[0].prices[0];
 const pricing = {
   currency: actualPrice.currency,
   total: actualPrice.total.value,
-  cancellationFees: window['wt-pricing-algorithms'].cancellationFees.computeCancellationFees(
+  cancellationFees: window.wtPricingAlgorithms.cancellationFees.computeCancellationFees(
     new Date(),
     dayjs(arrivalDateInput.value),
     hotelDataFromApi.cancellationPolicies,
@@ -366,5 +366,5 @@ data in the browser.
 
 ## Where to next
 
-- [Full code of this example](https://gist.github.com/JirkaChadima/262c06fbd0e0f00235c5a695c567a64b/fd447c9b25c5f9fac7c665a6625dd05a49c56b2b)
+- [Full code of this example](https://gist.github.com/JirkaChadima/262c06fbd0e0f00235c5a695c567a64b/45bdff2f17d6b979e76b5e785fb0d1fbb68f0029)
 - How to build a Travel Agency

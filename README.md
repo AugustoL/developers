@@ -1,5 +1,7 @@
 # Winding Tree documentation in the form of gitbook
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/windingtree/developers.svg)](https://greenkeeper.io/)
+
 ## Local development
 
 Either use [gitbook-editor](https://legacy.gitbook.com/editor)

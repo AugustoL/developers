@@ -2,6 +2,7 @@
 
 In this tutorial, you will learn how to publish a very simple offer.
 
+
 ## Requirements
 
 - [Winding Tree Write API](https://github.com/windingtree/wt-write-api) URL.
@@ -14,9 +15,10 @@ the Winding Tree ecosystem APIs.
 
 Let's say your name is Frank, you are living in Washington, DC, you are going out of town for a weekend, and you want to offer your apartment to other travelers.
 
+
 ### Preparing the data
 
-In Winding Tree ecosystem, data is divided into the following
+In the Winding Tree ecosystem, data is divided into the following
 groups:
 
   - general description
@@ -25,7 +27,7 @@ groups:
   - availability
 
 We are going to construct the data document necessary to register
-your apartment in Winding Tree ecosystem and offer it to the world.
+your apartment in the Winding Tree ecosystem and offer it to the world.
 
 #### General description
 
@@ -44,11 +46,12 @@ about both you and the property. In Frank's case, it will look like this:
       }
     },
     "address": {
-      "line1": "300 E. Street SW, Suite 5R30",
+      "road": "E. Street SW, Suite 5R30",
+      "houseNumber": "300",
       "city": "Washington",
       "state": "DC",
-      "postalCode": "20546",
-      "country": "US"
+      "postcode": "20546",
+      "countryCode": "US"
     },
     "timezone": "America/New_York",
     "currency": "USD",
@@ -135,6 +138,19 @@ will be free for three nights - from Thursday to Sunday.
 }
 ```
 
+#### Special fields
+
+In addition to the aforementioned sections, the data can contain a few
+more special fields.
+
+Since we don't currently offer a way of localizing the textual data,
+we at least allow you to declare in which `defaultLocale` the content is.
+It can be used to for example translate the text automatically on the client
+side.
+
+Another special field is called `booking` and contains URI of the
+[Booking API](how-to-accept-bookings.md) instance.
+
 ### Uploading the data
 
 The [Write API](https://github.com/windingtree/wt-write-api) wants all
@@ -155,11 +171,12 @@ We will store the data into a file called `franks-apartment.json`.
       }
     },
     "address": {
-      "line1": "300 E. Street SW, Suite 5R30",
+      "road": "E. Street SW, Suite 5R30",
+      "houseNumber": "300",
       "city": "Washington",
       "state": "DC",
-      "postalCode": "20546",
-      "country": "US"
+      "postcode": "20546",
+      "countryCode": "US"
     },
     "roomTypes": [
       {
@@ -204,7 +221,9 @@ We will store the data into a file called `franks-apartment.json`.
         "quantity": 1
       }
     ]
-  }
+  },
+  "defaultLocale": "en",
+  "booking": "https://franks.example-booking-domain.com"
 }
 ```
 

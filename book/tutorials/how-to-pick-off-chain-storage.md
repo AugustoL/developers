@@ -1,4 +1,4 @@
-# How to pick na appropriate off-chain storage
+# How to pick an appropriate off-chain storage
 
 In this tutorial, you will learn about storage options in Winding
 Tree ecosystem.
@@ -42,10 +42,27 @@ For reading, everything should work out of the box and apart from
 telling the Read API to use all of the adapters, there are no
 additional steps needed.
 
+### HTTPS
+
+For a robust storage system, we support serving the documents via
+good old HTTPS. This allows you to even serve the documents dynamically
+from your existing backend. You then only need to make sure that your API
+speaks the proper data format.
+
+The biggest disadvantage is that you need to host your data somewhere. The
+Write API supports upload to [AWS S3](https://aws.amazon.com/s3/) out of the
+box, but the Adapter itself does not contain any HTTPS upload specific code.
+It is up to you.
+
+While setting up your server, don't forget about proper
+[Cross-origin resource sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+setup.
+
+
 ### Swarm
 
 [Swarm](https://swarm-gateways.net/bzz:/theswarm.eth/) is a decentralized
-storage developed alongside Ethereum. It is still in its alpha stage
+storage developed alongside Ethereum. It is **still in its alpha stage**
 and is quite unstable and highly experimental.
 
 Its main advantage is the decentralization aspect - you don't need to 
@@ -64,18 +81,6 @@ nature I wouldn't use it in production just yet. The addressing issue
 can be mitigated by using [Swarm feeds](https://swarm-guide.readthedocs.io/en/latest/usage.html#feeds)
 which we want to support eventually.
 
-### HTTPS
-
-For a more robust storage system, we support serving the documents via
-good old HTTPS. This allows you to even serve the documents dynamically
-from your existing backend. You then only need to make sure that your API
-speaks the proper data format.
-
-The biggest disadvantage is that you need to host your data somewhere. The
-Write API supports upload to [AWS S3](https://aws.amazon.com/s3/) out of the
-box, but the Adapter itself does not contain any HTTPS upload specific code.
-It is up to you.
-
 ### More options
 
 There are of course plenty of options available, some more mature than others.
@@ -90,3 +95,4 @@ party contribution. Thank you!
 
 - <a href="https://github.com/windingtree/off-chain-adapter-swarm" target="_blank">Adapter for Swarm storage (Javascript)</a>
 - <a href="https://github.com/windingtree/off-chain-adapter-http" target="_blank">Adapter for HTTPS storage (Javascript)</a>
+- [How to setup AWS S3]('how-to-setup-aws-s3.md')

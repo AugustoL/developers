@@ -11,6 +11,7 @@
 ## Client implementations
 
 * <a href="https://github.com/windingtree/wt-hotel-explorer" target="_blank">Hotel explorer</a>
+* <a href="https://github.com/windingtree/wt-index-debugger" target="_blank">Index debugger</a>
 
 ## Libraries
 

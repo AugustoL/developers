@@ -16,6 +16,10 @@ Every hotel should advertise a `bookingUri` in its data published
 through Write API. This `bookingUri` should be pointing to REST
 API which is implementing the booking protocol.
 
+While setting up your server, don't forget about proper
+[Cross-origin resource sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
+setup since the API might be called from various places.
+
 ### Booking protocol
 
 The booking protocol is really just a 

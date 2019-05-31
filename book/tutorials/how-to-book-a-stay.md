@@ -80,7 +80,7 @@ so in this case, the refunded amount will be just about GBP 224.
 ```json
 {
   "currency": "GBP",
-  "total": 320.23,
+  "total": 320,
   "cancellationFees": [
     {
       "from": "2019-02-26",
@@ -95,6 +95,83 @@ Both the price and cancellation fees are computed from the data distributed
 via Winding Tree platform. To compute the data for an actual booking, you can
 use our open-source Javascript pricing library
 [@windingtree/wt-pricing-algorithms](https://github.com/windingtree/wt-pricing-algorithms).
+
+Optionally, if you need additional pricing information, you can use the `components`
+property which can contain a day-by-day and guest-by-guest breakdown of the
+price. It might look like this:
+
+```json
+{
+  "components": {
+    "stay": [
+      {
+        "date": "2019-03-02",
+        "subtotal": 80,
+        "guests": [
+          {
+            "guestId": "guest-1",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 50
+          },
+          {
+            "guestId": "guest-2",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 30
+          }
+        ]
+      },
+      {
+        "date": "2019-03-03",
+        "subtotal": 80,
+        "guests": [
+          {
+            "guestId": "guest-1",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 50
+          },
+          {
+            "guestId": "guest-2",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 30
+          }
+        ]
+      },
+      {
+        "date": "2019-03-04",
+        "subtotal": 80,
+        "guests": [
+          {
+            "guestId": "guest-1",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 50
+          },
+          {
+            "guestId": "guest-2",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 30
+          }
+        ]
+      },
+      {
+        "date": "2019-03-05",
+        "subtotal": 80,
+        "guests": [
+          {
+            "guestId": "guest-1",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 50
+          },
+          {
+            "guestId": "guest-2",
+            "ratePlanId": "early-spring",
+            "resultingPrice": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ### Putting everything together
 
@@ -133,6 +210,10 @@ to everything we've said, contains a hotel's ID (Ethereum address).
   }
 }
 ```
+
+Another optional field that you can set is `origin` which can hold a name
+or identifier of the system where the booking happens - such as a travel
+agency or an online portal. This is useful to track your traffic sources.
 
 And finally, we tell the hotel that we want to book the property.
 
