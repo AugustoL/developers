@@ -5,6 +5,7 @@
   * [Query Listings](tutorials/how-to-retrieve-inventory.md)
   * [Book a Stay](tutorials/how-to-book-a-stay.md)
 * [Tooling and Integrations](tooling.md)
+* [Architectural Overview](architectural-overview.md)
 * [API Specifications](apis.md)
 * [Data Model](data-model.md)
 * [Data Validation](data-validation/data-validation.md)
